@@ -4,8 +4,7 @@ window.addEventListener("scroll", function () {
   if (window.scrollY > 100) {
     navbar.style.background = "#141414";
   } else {
-    navbar.style.background =
-      "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)";
+    navbar.style.background = "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)";
   }
 });
 
@@ -25,11 +24,7 @@ menuBtn.addEventListener("click", () => {
 
 // Close menu when clicking outside
 document.addEventListener("click", (e) => {
-  if (
-    !navLinks.contains(e.target) &&
-    !menuBtn.contains(e.target) &&
-    isMenuOpen
-  ) {
+  if (!navLinks.contains(e.target) && !menuBtn.contains(e.target) && isMenuOpen) {
     isMenuOpen = false;
     navLinks.classList.remove("active");
     document.body.style.overflow = "auto";
@@ -118,6 +113,14 @@ thumbnails.forEach((thumbnail) => {
 
         heroContent.classList.remove("fade");
       }, 300);
+
+      // Simpan video yang dipilih
+      selectedVideo = this.getAttribute("data-video");
+      localStorage.setItem("selectedVideo", selectedVideo);
+
+      // Tambah border ke thumbnail terpilih
+      thumbnails.forEach((t) => t.classList.remove("selected"));
+      this.classList.add("selected");
     }
   });
 });
@@ -126,3 +129,30 @@ thumbnails.forEach((thumbnail) => {
 document.querySelector(".btn-play").addEventListener("click", function () {
   window.location.href = "player.html";
 });
+
+// Tombol Play
+const playButton = document.querySelector(".btn-play");
+if (playButton) {
+  playButton.addEventListener("click", function () {
+    const videoToPlay = localStorage.getItem("selectedVideo");
+
+    if (videoToPlay) {
+      window.location.href = "player.html";
+    } else {
+      alert("No video selected!");
+    }
+  });
+}
+
+// Player Page
+const videoPlayer = document.getElementById("videoPlayer");
+if (videoPlayer) {
+  const videoToPlay = localStorage.getItem("selectedVideo");
+
+  if (videoToPlay) {
+    videoPlayer.src = videoToPlay;
+  } else {
+    alert("No video selected!");
+    window.location.href = "index.html";
+  }
+}
